@@ -2,38 +2,38 @@
 Implements a basic 2D matrix struct and some fundamental operations.
 */
 
-struct Matrix<T> {
+pub struct Matrix<T> {
     data: Vec<T>,
     dim: (usize, usize),
 }
 
 impl Matrix<f64> {
     // Basic constructor, getters and setters
-    fn new(dim: (usize, usize)) -> Self {
+    pub fn new(dim: (usize, usize)) -> Self {
         let data: Vec<f64> = vec![0.0; dim.0 * dim.1];
         return Self { data, dim };
     }
 
-    fn set(&mut self, r: usize, c: usize, val: f64) {
+    pub fn set(&mut self, r: usize, c: usize, val: f64) {
         if r >= self.dim.0 || c >= self.dim.1 {
             panic!("Index out of bounds.");
         }
         self.data[r * self.dim.1 + c] = val;
     }
 
-    fn get(&self, r: usize, c: usize) -> f64 {
+    pub fn get(&self, r: usize, c: usize) -> f64 {
         if r >= self.dim.0 || c >= self.dim.1 {
             panic!("Index out of bounds.");
         }
         return self.data[r * self.dim.1 + c];
     }
 
-    fn get_dim(&self) -> (usize, usize) {
+    pub fn get_dim(&self) -> (usize, usize) {
         return self.dim;
     }
 
     // Matrix specific mathematical operations
-    fn transpose(&self) -> Self {
+    pub fn transpose(&self) -> Self {
         let mut result: Matrix<f64> = Matrix::<f64>::new((self.dim.1, self.dim.0));
         for r in 0..self.dim.0 {
             for c in 0..self.dim.1 {
@@ -43,7 +43,7 @@ impl Matrix<f64> {
         return result;
     }
 
-    fn dot_product(&self, rhs: &Self) -> f64 {
+    pub fn dot_product(&self, rhs: &Self) -> f64 {
         assert_eq!(self.dim, rhs.dim);
         let mut sum: f64 = 0.0;
         for r in 0..self.dim.0 {
