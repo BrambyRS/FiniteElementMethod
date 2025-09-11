@@ -9,7 +9,8 @@ pub fn N1(xi: f64) -> f64 {
     return (1.0 - xi) / 2.0;
 }
 
-pub fn dN1(_xi: f64) -> f64 { // xi argument is just for consistency
+pub fn dN1(_xi: f64) -> f64 {
+    // xi argument is just for consistency
     return -0.5;
 }
 
@@ -17,7 +18,8 @@ pub fn N2(xi: f64) -> f64 {
     return (1.0 + xi) / 2.0;
 }
 
-pub fn dN2(_xi: f64) -> f64 { // xi argument is just for consistency
+pub fn dN2(_xi: f64) -> f64 {
+    // xi argument is just for consistency
     return 0.5;
 }
 

@@ -60,7 +60,10 @@ impl std::ops::Add for Matrix<f64> {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self::Output {
-        assert_eq!(self.dim, rhs.dim, "Matrix dimensions must match for addition.");
+        assert_eq!(
+            self.dim, rhs.dim,
+            "Matrix dimensions must match for addition."
+        );
         let mut result: Matrix<f64> = Matrix::<f64>::new(self.dim);
         for r in 0..self.dim.0 {
             for c in 0..self.dim.1 {
@@ -75,7 +78,10 @@ impl std::ops::Sub for Matrix<f64> {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self::Output {
-        assert_eq!(self.dim, rhs.dim, "Matrix dimensions must match for subtraction.");
+        assert_eq!(
+            self.dim, rhs.dim,
+            "Matrix dimensions must match for subtraction."
+        );
         let mut result: Matrix<f64> = Matrix::<f64>::new(self.dim);
         for r in 0..self.dim.0 {
             for c in 0..self.dim.1 {
@@ -138,7 +144,7 @@ mod tests {
 
     #[test]
     fn test_matrix_transpose() {
-        let mut m: Matrix<f64> = Matrix::<f64>::new( (2, 3));
+        let mut m: Matrix<f64> = Matrix::<f64>::new((2, 3));
         m.set(0, 0, 1.0);
         m.set(0, 1, 2.0);
         m.set(0, 2, 3.0);
