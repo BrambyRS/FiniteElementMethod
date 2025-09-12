@@ -95,6 +95,30 @@ impl std::ops::Add for Matrix<f64> {
     }
 }
 
+// Scalar + Reference (Scalar on the left)
+impl std::ops::Add<&Matrix<f64>> for f64 {
+    type Output = Matrix<f64>;
+
+    fn add(self, rhs: &Matrix<f64>) -> Self::Output {
+        let mut result: Matrix<f64> = Matrix::<f64>::new(rhs.dim);
+        for r in 0..rhs.dim.0 {
+            for c in 0..rhs.dim.1 {
+                result.set(r, c, self + rhs.get(r, c));
+            }
+        }
+        return result;
+    }
+}
+
+// Reference + Scalar (Scalar on the right)
+impl std::ops::Add<f64> for &Matrix<f64> {
+    type Output = Matrix<f64>;
+
+    fn add(self, rhs: f64) -> Self::Output {
+        rhs + self
+    }
+}
+
 // Reference - Reference
 impl std::ops::Sub<&Matrix<f64>> for &Matrix<f64> {
     type Output = Matrix<f64>;
@@ -119,6 +143,36 @@ impl std::ops::Sub for Matrix<f64> {
     type Output = Matrix<f64>;
     fn sub(self, rhs: Self) -> Self::Output {
         &self - &rhs
+    }
+}
+
+// Scalar - Reference (Scalar on the left)
+impl std::ops::Sub<&Matrix<f64>> for f64 {
+    type Output = Matrix<f64>;
+
+    fn sub(self, rhs: &Matrix<f64>) -> Self::Output {
+        let mut result: Matrix<f64> = Matrix::<f64>::new(rhs.dim);
+        for r in 0..rhs.dim.0 {
+            for c in 0..rhs.dim.1 {
+                result.set(r, c, self - rhs.get(r, c));
+            }
+        }
+        return result;
+    }
+}
+
+// Reference - Scalar (Scalar on the right)
+impl std::ops::Sub<f64> for &Matrix<f64> {
+    type Output = Matrix<f64>;
+
+    fn sub(self, rhs: f64) -> Self::Output {
+        let mut result: Matrix<f64> = Matrix::<f64>::new(self.dim);
+        for r in 0..self.dim.0 {
+            for c in 0..self.dim.1 {
+                result.set(r, c, self.get(r, c) - rhs);
+            }
+        }
+        return result;
     }
 }
 
@@ -147,6 +201,42 @@ impl std::ops::Mul for Matrix<f64> {
     type Output = Matrix<f64>;
     fn mul(self, rhs: Self) -> Self::Output {
         &self * &rhs
+    }
+}
+
+// Scalar * Reference (Scalar on the left)
+impl std::ops::Mul<&Matrix<f64>> for f64 {
+    type Output = Matrix<f64>;
+    fn mul(self, rhs: &Matrix<f64>) -> Self::Output {
+        let mut result: Matrix<f64> = Matrix::<f64>::new(rhs.dim);
+        for r in 0..rhs.dim.0 {
+            for c in 0..rhs.dim.1 {
+                result.set(r, c, self * rhs.get(r, c));
+            }
+        }
+        return result;
+    }
+}
+
+// Reference * Scalar (Scalar on the right)
+impl std::ops::Mul<f64> for &Matrix<f64> {
+    type Output = Matrix<f64>;
+    fn mul(self, rhs: f64) -> Self::Output {
+        rhs * self
+    }
+}
+
+// Reference / Scalar
+impl std::ops::Div<f64> for &Matrix<f64> {
+    type Output = Matrix<f64>;
+    fn div(self, rhs: f64) -> Self::Output {
+        let mut result: Matrix<f64> = Matrix::<f64>::new(self.dim);
+        for r in 0..self.dim.0 {
+            for c in 0..self.dim.1 {
+                result.set(r, c, self.get(r, c) / rhs);
+            }
+        }
+        return result;
     }
 }
 
@@ -280,6 +370,27 @@ mod tests {
     }
 
     #[test]
+    fn test_scalar_add() {
+        let mut m1: Matrix<f64> = Matrix::<f64>::new((2, 2));
+        m1.set(0, 0, 1.0);
+        m1.set(0, 1, 2.0);
+        m1.set(1, 0, 3.0);
+        m1.set(1, 1, 4.0);
+
+        let m2: Matrix<f64> = &m1 + 10.0;
+        assert_eq!(m2.get(0, 0), 11.0);
+        assert_eq!(m2.get(0, 1), 12.0);
+        assert_eq!(m2.get(1, 0), 13.0);
+        assert_eq!(m2.get(1, 1), 14.0);
+
+        let m3: Matrix<f64> = 10.0 + &m1;
+        assert_eq!(m3.get(0, 0), 11.0);
+        assert_eq!(m3.get(0, 1), 12.0);
+        assert_eq!(m3.get(1, 0), 13.0);
+        assert_eq!(m3.get(1, 1), 14.0);
+    }
+
+    #[test]
     fn test_matrix_sub() {
         let mut m1: Matrix<f64> = Matrix::<f64>::new((2, 2));
         m1.set(0, 0, 5.0);
@@ -298,6 +409,27 @@ mod tests {
         assert_eq!(m3.get(0, 1), 4.0);
         assert_eq!(m3.get(1, 0), 4.0);
         assert_eq!(m3.get(1, 1), 4.0);
+    }
+
+    #[test]
+    fn test_scalar_sub() {
+        let mut m1: Matrix<f64> = Matrix::<f64>::new((2, 2));
+        m1.set(0, 0, 1.0);
+        m1.set(0, 1, 2.0);
+        m1.set(1, 0, 3.0);
+        m1.set(1, 1, 4.0);
+
+        let m2: Matrix<f64> = &m1 - 10.0;
+        assert_eq!(m2.get(0, 0), -9.0);
+        assert_eq!(m2.get(0, 1), -8.0);
+        assert_eq!(m2.get(1, 0), -7.0);
+        assert_eq!(m2.get(1, 1), -6.0);
+
+        let m3: Matrix<f64> = 10.0 - &m1;
+        assert_eq!(m3.get(0, 0), 9.0);
+        assert_eq!(m3.get(0, 1), 8.0);
+        assert_eq!(m3.get(1, 0), 7.0);
+        assert_eq!(m3.get(1, 1), 6.0);
     }
 
     #[test]
@@ -344,6 +476,42 @@ mod tests {
         assert_eq!(m3.get(0, 1), 64.0);
         assert_eq!(m3.get(1, 0), 139.0);
         assert_eq!(m3.get(1, 1), 154.0);
+    }
+
+    #[test]
+    fn test_scalar_mul() {
+        let mut m1: Matrix<f64> = Matrix::<f64>::new((2, 2));
+        m1.set(0, 0, 1.0);
+        m1.set(0, 1, 2.0);
+        m1.set(1, 0, 3.0);
+        m1.set(1, 1, 4.0);
+
+        let m2: Matrix<f64> = &m1 * 10.0;
+        assert_eq!(m2.get(0, 0), 10.0);
+        assert_eq!(m2.get(0, 1), 20.0);
+        assert_eq!(m2.get(1, 0), 30.0);
+        assert_eq!(m2.get(1, 1), 40.0);
+
+        let m3: Matrix<f64> = 10.0 * &m1;
+        assert_eq!(m3.get(0, 0), 10.0);
+        assert_eq!(m3.get(0, 1), 20.0);
+        assert_eq!(m3.get(1, 0), 30.0);
+        assert_eq!(m3.get(1, 1), 40.0);
+    }
+
+    #[test]
+    fn test_scalar_div() {
+        let mut m1: Matrix<f64> = Matrix::<f64>::new((2, 2));
+        m1.set(0, 0, 10.0);
+        m1.set(0, 1, 20.0);
+        m1.set(1, 0, 30.0);
+        m1.set(1, 1, 40.0);
+
+        let m2: Matrix<f64> = &m1 / 10.0;
+        assert_eq!(m2.get(0, 0), 1.0);
+        assert_eq!(m2.get(0, 1), 2.0);
+        assert_eq!(m2.get(1, 0), 3.0);
+        assert_eq!(m2.get(1, 1), 4.0);
     }
 
     #[test]
