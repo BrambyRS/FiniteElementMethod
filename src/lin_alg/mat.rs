@@ -14,6 +14,14 @@ impl Matrix<f64> {
         return Self { data, dim };
     }
 
+    pub fn identity(size: usize) -> Self {
+        let mut mat: Matrix<f64> = Matrix::<f64>::new((size, size));
+        for i in 0..size {
+            mat.set(i, i, 1.0);
+        }
+        return mat;
+    }
+
     pub fn set(&mut self, r: usize, c: usize, val: f64) {
         if r >= self.dim.0 || c >= self.dim.1 {
             panic!("Index out of bounds.");
@@ -111,6 +119,18 @@ impl std::ops::Mul for Matrix<f64> {
     }
 }
 
+// Data management operations
+impl Clone for Matrix<f64> {
+    fn clone(&self) -> Self {
+        let mut new_data: Vec<f64> = vec![0.0; self.dim.0 * self.dim.1];
+        new_data.clone_from_slice(&self.data);
+        return Self {
+            data: new_data,
+            dim: self.dim,
+        };
+    }
+}
+
 // Tests
 #[cfg(test)]
 mod tests {
@@ -123,6 +143,21 @@ mod tests {
         for r in 0..2 {
             for c in 0..3 {
                 assert_eq!(m.get(r, c), 0.0);
+            }
+        }
+    }
+
+    #[test]
+    fn test_identity_matrix() {
+        let m: Matrix<f64> = Matrix::<f64>::identity(3);
+        assert_eq!(m.get_dim(), (3, 3));
+        for r in 0..3 {
+            for c in 0..3 {
+                if r == c {
+                    assert_eq!(m.get(r, c), 1.0);
+                } else {
+                    assert_eq!(m.get(r, c), 0.0);
+                }
             }
         }
     }
@@ -266,5 +301,35 @@ mod tests {
         assert_eq!(m3.get(0, 1), 64.0);
         assert_eq!(m3.get(1, 0), 139.0);
         assert_eq!(m3.get(1, 1), 154.0);
+    }
+
+    #[test]
+    fn test_matrix_clone() {
+        let mut m1: Matrix<f64> = Matrix::<f64>::new((2, 2));
+        m1.set(0, 0, 1.0);
+        m1.set(0, 1, 2.0);
+        m1.set(1, 0, 3.0);
+        m1.set(1, 1, 4.0);
+
+        let m2: Matrix<f64> = m1.clone();
+        assert_eq!(m2.get_dim(), (2, 2));
+        assert_eq!(m2.get(0, 0), 1.0);
+        assert_eq!(m2.get(0, 1), 2.0);
+        assert_eq!(m2.get(1, 0), 3.0);
+        assert_eq!(m2.get(1, 1), 4.0);
+    }
+
+    #[test]
+    fn test_change_clone() {
+        let mut m1: Matrix<f64> = Matrix::<f64>::new((2, 2));
+        m1.set(0, 0, 1.0);
+        m1.set(0, 1, 2.0);
+        m1.set(1, 0, 3.0);
+        m1.set(1, 1, 4.0);
+
+        let mut m2: Matrix<f64> = m1.clone();
+        m2.set(0, 0, 5.0);
+        assert_eq!(m1.get(0, 0), 1.0); // Ensure original matrix is unchanged
+        assert_eq!(m2.get(0, 0), 5.0); // Ensure cloned matrix is changed
     }
 }
