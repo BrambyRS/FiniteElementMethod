@@ -7,6 +7,9 @@ pub struct Mesh1D {
     node_coordinates: Vec<f64>, // Position of each node
 
     pub node_values: Vec<f64>, // Value at each node
+
+    pub elasticity: f64, // Material property (e.g., Young's modulus, thermal conductivity)
+    pub area: f64,       // Cross-sectional area
 }
 
 impl Mesh1D {
@@ -22,6 +25,8 @@ impl Mesh1D {
             element_size,
             node_coordinates,
             node_values,
+            elasticity: 0.0,
+            area: 0.0,
         };
     }
 
@@ -37,6 +42,8 @@ impl Mesh1D {
             element_size,
             node_coordinates,
             node_values,
+            elasticity: 0.0,
+            area: 0.0,
         };
     }
 
