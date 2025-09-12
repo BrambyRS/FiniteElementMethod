@@ -68,10 +68,11 @@ impl Matrix<f64> {
 }
 
 // Mathematical operations overloading
-impl std::ops::Add for Matrix<f64> {
-    type Output = Self;
+// Reference + Reference
+impl std::ops::Add<&Matrix<f64>> for &Matrix<f64> {
+    type Output = Matrix<f64>;
 
-    fn add(self, rhs: Self) -> Self::Output {
+    fn add(self, rhs: &Matrix<f64>) -> Self::Output {
         assert_eq!(
             self.dim, rhs.dim,
             "Matrix dimensions must match for addition."
@@ -86,10 +87,19 @@ impl std::ops::Add for Matrix<f64> {
     }
 }
 
-impl std::ops::Sub for Matrix<f64> {
-    type Output = Self;
+// Owned + Owned
+impl std::ops::Add for Matrix<f64> {
+    type Output = Matrix<f64>;
+    fn add(self, rhs: Self) -> Self::Output {
+        &self + &rhs
+    }
+}
 
-    fn sub(self, rhs: Self) -> Self::Output {
+// Reference - Reference
+impl std::ops::Sub<&Matrix<f64>> for &Matrix<f64> {
+    type Output = Matrix<f64>;
+
+    fn sub(self, rhs: &Matrix<f64>) -> Self::Output {
         assert_eq!(
             self.dim, rhs.dim,
             "Matrix dimensions must match for subtraction."
@@ -104,10 +114,19 @@ impl std::ops::Sub for Matrix<f64> {
     }
 }
 
-impl std::ops::Mul for Matrix<f64> {
-    type Output = Self;
+// Owned - Owned
+impl std::ops::Sub for Matrix<f64> {
+    type Output = Matrix<f64>;
+    fn sub(self, rhs: Self) -> Self::Output {
+        &self - &rhs
+    }
+}
 
-    fn mul(self, rhs: Self) -> Self::Output {
+// Reference * Reference
+impl std::ops::Mul<&Matrix<f64>> for &Matrix<f64> {
+    type Output = Matrix<f64>;
+
+    fn mul(self, rhs: &Matrix<f64>) -> Self::Output {
         assert!(self.dim.1 == rhs.dim.0);
         let mut result: Matrix<f64> = Matrix::<f64>::new((self.dim.0, rhs.dim.1));
         for r1 in 0..self.dim.0 {
@@ -120,6 +139,14 @@ impl std::ops::Mul for Matrix<f64> {
             }
         }
         return result;
+    }
+}
+
+// Owned * Owned (forward to reference version)
+impl std::ops::Mul for Matrix<f64> {
+    type Output = Matrix<f64>;
+    fn mul(self, rhs: Self) -> Self::Output {
+        &self * &rhs
     }
 }
 
