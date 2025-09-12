@@ -61,6 +61,10 @@ impl Matrix<f64> {
         }
         return sum;
     }
+
+    pub fn norm(&self) -> f64 {
+        return self.dot_product(self).sqrt();
+    }
 }
 
 // Mathematical operations overloading
@@ -213,6 +217,18 @@ mod tests {
 
         let dp: f64 = m1.dot_product(&m2);
         assert_eq!(dp, 70.0); // 1*5 + 2*6 + 3*7 + 4*8 = 70
+    }
+
+    #[test]
+    fn test_matrix_norm() {
+        let mut m: Matrix<f64> = Matrix::<f64>::new((2, 2));
+        m.set(0, 0, 3.0);
+        m.set(0, 1, 4.0);
+        m.set(1, 0, 0.0);
+        m.set(1, 1, 0.0);
+
+        let norm: f64 = m.norm();
+        assert_eq!(norm, 5.0); // sqrt(3^2 + 4^2 + 0^2 + 0^2) = 5
     }
 
     #[test]
