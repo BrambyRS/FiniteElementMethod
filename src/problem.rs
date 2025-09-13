@@ -8,7 +8,7 @@ use crate::lin_alg::mat;
 use crate::meshing::Mesh1D;
 
 pub struct Problem1D {
-    mesh: Mesh1D,
+    pub mesh: Mesh1D,
     dirichlet_condition: f64,
     neumann_condition: f64,
 }
