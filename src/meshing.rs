@@ -10,6 +10,7 @@ pub struct Mesh1D {
 
     pub elasticity: f64, // Material property (e.g., Young's modulus, thermal conductivity)
     pub area: f64,       // Cross-sectional area
+    pub internal_force: f64, // Body force (e.g., heat generation, distributed load)
 }
 
 impl Mesh1D {
@@ -27,6 +28,7 @@ impl Mesh1D {
             node_values,
             elasticity: 0.0,
             area: 0.0,
+            internal_force: 0.0,
         };
     }
 
@@ -44,6 +46,7 @@ impl Mesh1D {
             node_values,
             elasticity: 0.0,
             area: 0.0,
+            internal_force: 0.0,
         };
     }
 
