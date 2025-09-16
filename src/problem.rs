@@ -39,8 +39,8 @@ impl Problem1D {
     }
 
     fn construct_matrices(&self) -> (mat::Matrix<f64>, mat::Matrix<f64>) {
-        let int_N1: f64 = 1.0;
-        let int_N2: f64 = 1.0;
+        let int_n1: f64 = 1.0;
+        let int_n2: f64 = 1.0;
         let int_dn1: f64 = -0.5;
         let int_dn2: f64 = 0.5;
 
@@ -72,8 +72,8 @@ impl Problem1D {
             k_local.set(1, 0, k_fac_element * int_dn2 * int_dn1);
             k_local.set(1, 1, k_fac_element * int_dn2 * int_dn2);
 
-            f_local.set(0, 0, f_fac_element * int_N1);
-            f_local.set(1, 0, f_fac_element * int_N2);
+            f_local.set(0, 0, f_fac_element * int_n1);
+            f_local.set(1, 0, f_fac_element * int_n2);
 
             // Assemble into global matrices
             k.set(i - 1, i - 1, k.get(i - 1, i - 1) + k_local.get(0, 0));
