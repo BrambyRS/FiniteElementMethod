@@ -166,24 +166,7 @@ mod test {
         f_expected.set(4, 0, 1.0 + 100.0);
 
         let (k, f) = problem.construct_matrices();
-        for i in 0..5 {
-            for j in 0..5 {
-                assert!(
-                    (k.get(i, j) - k_expected.get(i, j)).abs() < 1e-10,
-                    "K[i: {}, j: {}] = {}, expected {}",
-                    i,
-                    j,
-                    k.get(i, j),
-                    k_expected.get(i, j)
-                );
-            }
-            assert!(
-                (f.get(i, 0) - f_expected.get(i, 0)).abs() < 1e-10,
-                "F[i: {}] = {}, expected {}",
-                i,
-                f.get(i, 0),
-                f_expected.get(i, 0)
-            );
-        }
+        assert_eq!(k, k_expected);
+        assert_eq!(f, f_expected);
     }
 }

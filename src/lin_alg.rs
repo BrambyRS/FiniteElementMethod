@@ -85,6 +85,19 @@ fn qr_decomposition(A: &mat::Matrix<f64>) -> (mat::Matrix<f64>, mat::Matrix<f64>
 mod tests {
     use super::*;
 
+    // Helper function to check if all elements of a matrix are below a tolerance
+    fn matrix_elements_below_tolerance(matrix: &mat::Matrix<f64>, tolerance: f64) -> bool {
+        let (rows, cols) = matrix.get_dim();
+        for r in 0..rows {
+            for c in 0..cols {
+                if matrix.get(r, c) >= tolerance {
+                    return false;
+                }
+            }
+        }
+        true
+    }
+
     #[test]
     fn test_qr_decomposition() {
         let mut a = mat::Matrix::new((3, 3));
@@ -124,13 +137,20 @@ mod tests {
         r_expected.set(2, 1, 0.000000000000000);
         r_expected.set(2, 2, -2.373464415855720);
 
-        for i in 0..3 {
-            for j in 0..3 {
-                assert!((a.get(i, j) - a_reconstructed.get(i, j)).abs() < 1e-10);
-                assert!((q.get(i, j) - q_expected.get(i, j)).abs() < 1e-10);
-                assert!((r.get(i, j) - r_expected.get(i, j)).abs() < 1e-10);
-            }
-        }
+        // Check that Q*R reconstructs the original matrix A
+        // For floating point results, we need tolerance-based comparison
+        let reconstruction_error = (&a - &a_reconstructed).abs();
+        assert!(matrix_elements_below_tolerance(
+            &reconstruction_error,
+            1e-10
+        ));
+
+        // Note: Due to floating point precision, we can't use exact equality for Q and R
+        // so we use matrix operations with tolerance checking
+        let q_error = (&q - &q_expected).abs();
+        let r_error = (&r - &r_expected).abs();
+        assert!(matrix_elements_below_tolerance(&q_error, 1e-10));
+        assert!(matrix_elements_below_tolerance(&r_error, 1e-10));
     }
 
     #[test]
@@ -158,8 +178,9 @@ mod tests {
         x_expected.set(1, 0, 1.307692307692307);
         x_expected.set(2, 0, 0.230769230769231);
 
-        for i in 0..3 {
-            assert!((x.get(i, 0) - x_expected.get(i, 0)).abs() < 1e-10);
-        }
+        // Note: Due to floating point precision, we can't use exact equality
+        // so we use matrix operations with tolerance checking
+        let solution_error = (&x - &x_expected).abs();
+        assert!(matrix_elements_below_tolerance(&solution_error, 1e-10));
     }
 }
