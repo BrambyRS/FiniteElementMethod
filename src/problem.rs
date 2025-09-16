@@ -7,6 +7,11 @@ use crate::lin_alg;
 use crate::lin_alg::mat;
 use crate::meshing::Mesh1D;
 
+pub enum BoundaryCondition {
+    Dirichlet(f64),
+    Neumann(f64),
+}
+
 pub struct Problem1D {
     pub mesh: Mesh1D,
     dirichlet_condition: f64,
@@ -107,6 +112,22 @@ impl Problem1D {
 mod test {
     use super::*;
     use crate::meshing;
+
+    #[test]
+    fn test_bc_enum() {
+        let dirichlet = BoundaryCondition::Dirichlet(100.0);
+        let neumann = BoundaryCondition::Neumann(50.0);
+
+        match dirichlet {
+            BoundaryCondition::Dirichlet(val) => assert_eq!(val, 100.0),
+            _ => panic!("Expected Dirichlet condition"),
+        }
+
+        match neumann {
+            BoundaryCondition::Neumann(val) => assert_eq!(val, 50.0),
+            _ => panic!("Expected Neumann condition"),
+        }
+    }
 
     #[test]
     fn test_problem_construction() {
