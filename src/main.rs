@@ -15,7 +15,7 @@ fn main() {
     let thermal_conductivity: f64 = 45.0; // W/m.K for steel
     let area = 0.01; // m^2
     let left_bc: problem::BoundaryCondition = problem::BoundaryCondition::Dirichlet(373.15); // Temperature at left end in K
-    let right_bc: problem::BoundaryCondition = problem::BoundaryCondition::Dirichlet(-1000.0); // Heat flux at right end in W/m^2
+    let right_bc: problem::BoundaryCondition = problem::BoundaryCondition::Neumann(-1000.0); // Heat flux at right end in W/m^2
 
     println!("Simulating heat conduction in a {length} m rod with {n_elements} elements...");
 
