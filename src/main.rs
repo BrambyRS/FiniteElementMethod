@@ -14,8 +14,8 @@ fn main() {
     let n_elements: usize = 100;
     let thermal_conductivity: f64 = 45.0; // W/m.K for steel
     let area = 0.01; // m^2
-    let dirichlet_bc: f64 = 373.15; // Temperature at left end in K
-    let neumann_bc: f64 = -1000.0; // Heat flux at right end in W/m^2
+    let left_bc: problem::BoundaryCondition = problem::BoundaryCondition::Dirichlet(373.15); // Temperature at left end in K
+    let right_bc: problem::BoundaryCondition = problem::BoundaryCondition::Dirichlet(-1000.0); // Heat flux at right end in W/m^2
 
     println!("Simulating heat conduction in a {length} m rod with {n_elements} elements...");
 
@@ -24,7 +24,7 @@ fn main() {
     mesh.area = area;
     mesh.internal_force = -25.0; // W/m^3, volumetric heat generation/loss
 
-    let mut problem: problem::Problem1D = problem::Problem1D::new(mesh, dirichlet_bc, neumann_bc);
+    let mut problem: problem::Problem1D = problem::Problem1D::new(mesh, left_bc, right_bc);
     problem.solve();
 
     println!("Nodal temperatures (°C):");
