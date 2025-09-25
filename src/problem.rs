@@ -1,8 +1,3 @@
-/*
-Only allows for problems with a Dirichlet boundary condition at the left boundary
-and a Neumann boundary condition at the right boundary
-*/
-
 use crate::lin_alg;
 use crate::lin_alg::mat;
 use crate::meshing::Mesh1D;
