@@ -1,8 +1,6 @@
-mod basis_functions;
-mod lin_alg;
+mod maths;
 mod meshing;
 mod problem;
-mod quadrature;
 
 fn kelvin_to_celsius(k: f64) -> f64 {
     k - 273.15

@@ -1,5 +1,5 @@
-use crate::lin_alg;
-use crate::lin_alg::mat;
+use crate::maths::lin_alg;
+use crate::maths::lin_alg::mat;
 use crate::meshing::Mesh1D;
 
 pub struct Problem1D {
