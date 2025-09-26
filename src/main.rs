@@ -23,7 +23,7 @@ fn main() {
     mesh.area = area;
     mesh.internal_force = -25.0; // W/m^3, volumetric heat generation/loss
 
-    let mut problem: problem::Problem1D = problem::Problem1D::new(mesh, left_bc, right_bc);
+    let mut problem: problem::Problem1D = problem::Problem1D::new(mesh, 1, left_bc, right_bc);
     problem.solve();
 
     println!("Nodal temperatures (°C):");

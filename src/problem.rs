@@ -9,14 +9,21 @@ pub enum BoundaryCondition {
 
 pub struct Problem1D {
     pub mesh: Mesh1D,
+    pub order: usize,
     pub left_bc: BoundaryCondition,
     pub right_bc: BoundaryCondition,
 }
 
 impl Problem1D {
-    pub fn new(mesh: Mesh1D, left_bc: BoundaryCondition, right_bc: BoundaryCondition) -> Self {
+    pub fn new(
+        mesh: Mesh1D,
+        order: usize,
+        left_bc: BoundaryCondition,
+        right_bc: BoundaryCondition,
+    ) -> Self {
         return Self {
             mesh,
+            order,
             left_bc,
             right_bc,
         };
@@ -199,7 +206,7 @@ mod test {
         let left_bc = BoundaryCondition::Dirichlet(273.15);
         let right_bc = BoundaryCondition::Neumann(100.0);
 
-        let problem: Problem1D = Problem1D::new(mesh, left_bc, right_bc);
+        let problem: Problem1D = Problem1D::new(mesh, 1, left_bc, right_bc);
         // assert_eq!(problem.dirichlet_condition, 273.15);
         // assert_eq!(problem.neumann_condition, 100.0);
         assert_eq!(problem.mesh.get_n_elements(), 5);
@@ -243,7 +250,7 @@ mod test {
         let left_bc = BoundaryCondition::Neumann(50.0);
         let right_bc = BoundaryCondition::Dirichlet(373.15);
 
-        let problem: Problem1D = Problem1D::new(mesh, left_bc, right_bc);
+        let problem: Problem1D = Problem1D::new(mesh, 1, left_bc, right_bc);
         // assert_eq!(problem.dirichlet_condition, 273.15);
         // assert_eq!(problem.neumann_condition, 100.0);
         assert_eq!(problem.mesh.get_n_elements(), 5);
@@ -287,7 +294,7 @@ mod test {
         let left_bc = BoundaryCondition::Dirichlet(273.15);
         let right_bc = BoundaryCondition::Dirichlet(373.15);
 
-        let problem: Problem1D = Problem1D::new(mesh, left_bc, right_bc);
+        let problem: Problem1D = Problem1D::new(mesh, 1, left_bc, right_bc);
         // assert_eq!(problem.dirichlet_condition, 273.15);
         // assert_eq!(problem.neumann_condition, 100.0);
         assert_eq!(problem.mesh.get_n_elements(), 5);
@@ -327,7 +334,7 @@ mod test {
         let left_bc = BoundaryCondition::Neumann(50.0);
         let right_bc = BoundaryCondition::Neumann(100.0);
 
-        let problem: Problem1D = Problem1D::new(mesh, left_bc, right_bc);
+        let problem: Problem1D = Problem1D::new(mesh, 1, left_bc, right_bc);
         // assert_eq!(problem.dirichlet_condition, 273.15);
         // assert_eq!(problem.neumann_condition, 100.0);
         assert_eq!(problem.mesh.get_n_elements(), 5);
