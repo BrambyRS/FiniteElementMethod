@@ -1,5 +1,4 @@
-mod basis_functions;
-mod lin_alg;
+extern crate maths_toolbox;
 mod meshing;
 mod problem;
 

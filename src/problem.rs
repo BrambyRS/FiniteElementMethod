@@ -3,8 +3,8 @@ Only allows for problems with a Dirichlet boundary condition at the left boundar
 and a Neumann boundary condition at the right boundary
 */
 
-use crate::lin_alg;
-use crate::lin_alg::mat;
+use crate::maths_toolbox::lin_alg;
+use crate::maths_toolbox::lin_alg::mat;
 use crate::meshing::Mesh1D;
 
 pub enum BoundaryCondition {
