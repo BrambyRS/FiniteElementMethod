@@ -1,0 +1,3 @@
+[submodule "libs/maths_toolbox"]
+	path = libs/maths_toolbox
+	url = https://github.com/BrambyRS/maths_toolbox.git
